@@ -91,5 +91,3 @@ def float_to_srt_time_format(d: float) -> str:
         ms = f"{fraction:.3f}".replace("0.", "")
         return time_fmt + ms
     
-# export AWS_ACCESS_KEY_ID=AKIAQP3CBAKPWUJ4DUVF
-# export AWS_SECRET_ACCESS_KEY=+ecJ3WZZsM/+tpjiJaq7gclITSOGvdhdTST582Ji

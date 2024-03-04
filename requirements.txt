@@ -1,0 +1,5 @@
+boto3==1.28.2
+Flask==2.3.2
+Flask_Cors==4.0.0
+pytube==15.0.0
+Requests==2.31.0

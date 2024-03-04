@@ -24,7 +24,6 @@ def get_text(curr_link):
         youtube = pytube.YouTube(curr_link)
         print("curr_link", flush=True)
         video_id = youtube.video_id
-        print(len(youtube.streams), flush=True)
         # youtube.bypass_age_gate()
         # caption = youtube.captions['a.en']
         # full_text = xml_caption_to_srt(caption.xml_captions)

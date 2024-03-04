@@ -3,11 +3,12 @@ import xml.etree.ElementTree as ElementTree
 from html import unescape
 import math
 import time
-import pytube
 from flask_cors import CORS
 import base64
 import boto3
 import requests
+import pytube
+
 
 app = Flask(__name__)
 CORS(app)
@@ -19,9 +20,11 @@ def hello_world():
 @app.route("/get-text/<path:curr_link>")
 def get_text(curr_link):
     try:
+        print(curr_link, flush=True)
         youtube = pytube.YouTube(curr_link)
+        print("curr_link", flush=True)
         video_id = youtube.video_id
-        print(len(youtube.streams))
+        print(len(youtube.streams), flush=True)
         youtube.bypass_age_gate()
         caption = youtube.captions['a.en']
         full_text = xml_caption_to_srt(caption.xml_captions)
@@ -51,7 +54,7 @@ def get_text(curr_link):
         
         file_url = write_to_s3_bucket(full_text)
         
-        return jsonify({"message": full_text, "file_url": file_url})
+        return jsonify({"message": full_text, "file_url": file_url, "video_id": video_id})
     except Exception as e:
         print(e, flush=True)
         return jsonify({"message": "not valid youtube"})
@@ -88,3 +91,5 @@ def float_to_srt_time_format(d: float) -> str:
         ms = f"{fraction:.3f}".replace("0.", "")
         return time_fmt + ms
     
+# export AWS_ACCESS_KEY_ID=AKIAQP3CBAKPWUJ4DUVF
+# export AWS_SECRET_ACCESS_KEY=+ecJ3WZZsM/+tpjiJaq7gclITSOGvdhdTST582Ji

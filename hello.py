@@ -51,10 +51,10 @@ def get_text(curr_link):
             return file_url
 
         
-        file_url = write_to_s3_bucket(full_text)
+        # file_url = write_to_s3_bucket(full_text)
         
-        return jsonify({"message": full_text, "file_url": file_url, "video_id": video_id})
-        # return jsonify({"message": "hii"})
+        # return jsonify({"message": full_text, "file_url": file_url, "video_id": video_id})
+        return jsonify({"message": full_text, "video_id": video_id})
 
     except Exception as e:
         print(e, flush=True)

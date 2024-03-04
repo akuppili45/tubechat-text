@@ -29,32 +29,32 @@ def get_text(curr_link):
         full_text = xml_caption_to_srt(caption.xml_captions)
         # put full_text in cloud storage write to a file and return the link
         
-        # folder_name = video_id
-        # file_name = f'{folder_name}/captions.txt'
-        # def write_to_s3_bucket(text: str) -> str:
-        #     s3 = boto3.client('s3')
-        #     bucket_name = 'tubechat-contents'
-        #     response = s3.list_objects_v2(Bucket=bucket_name, Prefix=file_name)
-        #     check = 'Contents' in response
-        #     if not check:
-        #         s3.put_object(Body=text, Bucket=bucket_name, Key=file_name)
-        #         # create vector store
-        #         url = f'http://127.0.0.1:5001/vector-store/{video_id}'
-        #         response = requests.get(url)
-        #         if response.status_code == 200:
-        #             print("worked")
-        #         else:
-        #             print(f"Can't create vector store. Request failed with status code {response.status_code}")
-        #     else:
-        #         print("already exists", flush=True)
-        #     file_url = f"https://{bucket_name}.s3.amazonaws.com/{file_name}"
-        #     return file_url
+        folder_name = video_id
+        file_name = f'{folder_name}/captions.txt'
+        def write_to_s3_bucket(text: str) -> str:
+            s3 = boto3.client('s3')
+            bucket_name = 'tubechat-contents'
+            response = s3.list_objects_v2(Bucket=bucket_name, Prefix=file_name)
+            check = 'Contents' in response
+            if not check:
+                s3.put_object(Body=text, Bucket=bucket_name, Key=file_name)
+                # create vector store
+                url = f'http://127.0.0.1:5001/vector-store/{video_id}'
+                response = requests.get(url)
+                if response.status_code == 200:
+                    print("worked")
+                else:
+                    print(f"Can't create vector store. Request failed with status code {response.status_code}")
+            else:
+                print("already exists", flush=True)
+            file_url = f"https://{bucket_name}.s3.amazonaws.com/{file_name}"
+            return file_url
 
         
-        # file_url = write_to_s3_bucket(full_text)
+        file_url = write_to_s3_bucket(full_text)
         
-        # return jsonify({"message": full_text, "file_url": file_url, "video_id": video_id})
-        return jsonify({"message": "hii"})
+        return jsonify({"message": full_text, "file_url": file_url, "video_id": video_id})
+        # return jsonify({"message": "hii"})
 
     except Exception as e:
         print(e, flush=True)

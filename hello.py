@@ -39,12 +39,12 @@ def get_text(curr_link):
             if not check:
                 s3.put_object(Body=text, Bucket=bucket_name, Key=file_name)
                 # create vector store
-                url = f'http://127.0.0.1:5001/vector-store/{video_id}'
-                response = requests.get(url)
-                if response.status_code == 200:
-                    print("worked")
-                else:
-                    print(f"Can't create vector store. Request failed with status code {response.status_code}")
+                # url = f'http://127.0.0.1:5001/vector-store/{video_id}'
+                # response = requests.get(url)
+                # if response.status_code == 200:
+                #     print("worked")
+                # else:
+                #     print(f"Can't create vector store. Request failed with status code {response.status_code}")
             else:
                 print("already exists", flush=True)
             file_url = f"https://{bucket_name}.s3.amazonaws.com/{file_name}"

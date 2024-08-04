@@ -8,6 +8,7 @@ import base64
 import boto3
 import requests
 import pytube
+from youtube_transcript_api import YouTubeTranscriptApi 
 
 
 app = Flask(__name__)
@@ -17,18 +18,15 @@ CORS(app)
 def hello_world():
     return jsonify({"message": "hello world"})
 
-@app.route("/get-text/<path:curr_link>")
-def get_text(curr_link):
+@app.route("/get-text/<video_id>")
+def get_text(video_id):
     try:
-        print(curr_link, flush=True)
-        youtube = pytube.YouTube(curr_link)
-        print("curr_link", flush=True)
-        video_id = youtube.video_id
-        youtube.bypass_age_gate()
-        caption = youtube.captions['a.en']
-        full_text = xml_caption_to_srt(caption.xml_captions)
         # put full_text in cloud storage write to a file and return the link
-        
+        print("helleo")
+        srt = YouTubeTranscriptApi.get_transcript(video_id)
+        full_text = ""
+        for item in srt:
+            full_text += item["text"] + " "
         folder_name = video_id
         file_name = f'{folder_name}/captions.txt'
         def write_to_s3_bucket(text: str) -> str:
@@ -38,13 +36,6 @@ def get_text(curr_link):
             check = 'Contents' in response
             if not check:
                 s3.put_object(Body=text, Bucket=bucket_name, Key=file_name)
-                # create vector store
-                # url = f'http://127.0.0.1:5001/vector-store/{video_id}'
-                # response = requests.get(url)
-                # if response.status_code == 200:
-                #     print("worked")
-                # else:
-                #     print(f"Can't create vector store. Request failed with status code {response.status_code}")
             else:
                 print("already exists", flush=True)
             file_url = f"https://{bucket_name}.s3.amazonaws.com/{file_name}"
